@@ -1,4 +1,4 @@
-package com.gmail.vovan762000.config;
+package com.github.vovan762000.restaurant_voting.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.h2.tools.Server;

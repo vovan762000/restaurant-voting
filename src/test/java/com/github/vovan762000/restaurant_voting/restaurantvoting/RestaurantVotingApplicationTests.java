@@ -1,4 +1,4 @@
-package com.gmail.vovan762000.restaurantvoting;
+package com.github.vovan762000.restaurant_voting.restaurantvoting;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

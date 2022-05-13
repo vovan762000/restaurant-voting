@@ -1,6 +1,6 @@
-package com.gmail.vovan762000.repository;
+package com.github.vovan762000.restaurant_voting.repository;
 
-import com.gmail.vovan762000.model.Vote;
+import com.github.vovan762000.restaurant_voting.model.Vote;
 import org.springframework.data.repository.CrudRepository;
 
 public interface VoteRepository extends CrudRepository<Vote,Integer> {

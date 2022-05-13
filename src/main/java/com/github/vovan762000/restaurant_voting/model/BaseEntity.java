@@ -1,4 +1,4 @@
-package com.gmail.vovan762000.model;
+package com.github.vovan762000.restaurant_voting.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;

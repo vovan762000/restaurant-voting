@@ -1,6 +1,6 @@
-package com.gmail.vovan762000.repository;
+package com.github.vovan762000.restaurant_voting.repository;
 
-import com.gmail.vovan762000.model.User;
+import com.github.vovan762000.restaurant_voting.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
