@@ -1,4 +1,4 @@
-package com.gmail.com.restaurantvoting;
+package com.gmail.vovan762000;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

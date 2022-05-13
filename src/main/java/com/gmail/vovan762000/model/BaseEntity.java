@@ -1,4 +1,4 @@
-package com.gmail.com.model;
+package com.gmail.vovan762000.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;

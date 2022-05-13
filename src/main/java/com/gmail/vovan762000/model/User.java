@@ -1,5 +1,6 @@
-package com.gmail.com.model;
+package com.gmail.vovan762000.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -13,12 +14,20 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
+@Table(name = "users")
 @Getter
 @Setter
-@ToString(callSuper = true, exclude = {"password"})
-public class User extends BaseEntity{
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@ToString(callSuper = true, exclude = {"password", "votes"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class User extends BaseEntity {
+    @Column(name = "email", nullable = false, unique = true)
+    @Email
+    @NotEmpty
+    @Size(max = 128)
+    private String email;
+
     @Column(name = "first_name")
     @Size(max = 128)
     private String firstName;
@@ -26,12 +35,6 @@ public class User extends BaseEntity{
     @Column(name = "last_name")
     @Size(max = 128)
     private String lastName;
-
-    @Column(name = "email", nullable = false, unique = true)
-    @Email
-    @NotEmpty
-    @Size(max = 128)
-    private String email;
 
     @Column(name = "password")
     @Size(max = 256)
@@ -43,7 +46,7 @@ public class User extends BaseEntity{
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> role;
 
-    @OneToOne(fetch = FetchType.LAZY,mappedBy = "vote")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonManagedReference
     private List<Vote> votes;

@@ -1,4 +1,4 @@
-package com.gmail.com.model;
+package com.gmail.vovan762000.model;
 
 public enum Role {
     ROLE_USER,
