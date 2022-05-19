@@ -1,4 +1,4 @@
-package com.github.vovan762000.restaurant_voting.model;
+package com.github.vovan762000.restaurantvoting.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
