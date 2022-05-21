@@ -27,7 +27,6 @@ public class Vote extends BaseEntity {
     private LocalDateTime dateTime;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JsonIgnore
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
 

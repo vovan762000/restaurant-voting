@@ -26,8 +26,7 @@ public class Restaurant extends BaseEntity {
     @Size(max = 128)
     private String restaurantName;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "restaurant")
-    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonManagedReference
     private List<Dish> dishes;
