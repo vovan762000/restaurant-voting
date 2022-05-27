@@ -16,10 +16,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 
+import static com.github.vovan762000.restaurantvoting.util.validation.ValidationUtil.assureIdConsistent;
+import static com.github.vovan762000.restaurantvoting.util.validation.ValidationUtil.checkNew;
+
 @RestController
 @RequestMapping(value = ProfileController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
-// TODO: cache only most requested data!
 public class ProfileController extends AbstractUserController {
     static final String REST_URL = "/api/profile";
 
@@ -43,7 +45,7 @@ public class ProfileController extends AbstractUserController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<User> register(@Valid @RequestBody UserTo userTo) {
         log.info("register {}", userTo);
-//        checkNew(userTo);
+        checkNew(userTo);
         User created = prepareAndSave(UserUtil.createNewFromTo(userTo));
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL).build().toUri();
@@ -54,7 +56,7 @@ public class ProfileController extends AbstractUserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
     public void update(@RequestBody @Valid UserTo userTo, @AuthenticationPrincipal AuthUser authUser) {
-//        assureIdConsistent(userTo, authUser.id());
+        assureIdConsistent(userTo, authUser.id());
         User user = authUser.getUser();
         prepareAndSave(UserUtil.updateFromTo(user, userTo));
     }

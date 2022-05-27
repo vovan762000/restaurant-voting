@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.github.vovan762000.restaurantvoting.HasIdAndEmail;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,7 +28,7 @@ import java.util.*;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class User extends NamedEntity implements Serializable {
+public class User extends NamedEntity implements HasIdAndEmail,Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

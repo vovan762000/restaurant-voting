@@ -14,6 +14,9 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
+import static com.github.vovan762000.restaurantvoting.util.validation.ValidationUtil.assureIdConsistent;
+import static com.github.vovan762000.restaurantvoting.util.validation.ValidationUtil.checkNew;
+
 @RestController
 @RequestMapping(value = AdminUserController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
@@ -49,7 +52,7 @@ public class AdminUserController extends AbstractUserController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> createWithLocation(@Valid @RequestBody User user) {
         log.info("create {}", user);
-//        checkNew(user);
+        checkNew(user);
         User created = prepareAndSave(user);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
@@ -62,7 +65,7 @@ public class AdminUserController extends AbstractUserController {
 //    @CacheEvict(allEntries = true)
     public void update(@Valid @RequestBody User user, @PathVariable int id) {
         log.info("update {} with id={}", user, id);
-//        assureIdConsistent(user, id);
+        assureIdConsistent(user, id);
         prepareAndSave(user);
     }
 
