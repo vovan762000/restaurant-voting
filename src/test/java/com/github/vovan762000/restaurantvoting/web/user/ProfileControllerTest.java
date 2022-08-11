@@ -39,11 +39,11 @@ class ProfileControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = USER_MAIL)
     void getWithVotes() throws Exception {
-//        perform(MockMvcRequestBuilders.get(REST_URL + "/with-votes"))
-//                .andExpect(status().isOk())
-//                .andDo(print())
-//                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-//                .andExpect(USER_MATCHER_WITH_VOTES.contentJson(user));
+        perform(MockMvcRequestBuilders.get(REST_URL + "/with-votes"))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(USER_MATCHER_WITH_VOTES.contentJson(user));
 
     }
 
