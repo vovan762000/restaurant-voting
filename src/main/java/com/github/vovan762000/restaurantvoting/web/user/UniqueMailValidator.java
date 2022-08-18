@@ -2,9 +2,9 @@ package com.github.vovan762000.restaurantvoting.web.user;
 
 import com.github.vovan762000.restaurantvoting.HasIdAndEmail;
 import com.github.vovan762000.restaurantvoting.repository.UserRepository;
-import com.github.vovan762000.restaurantvoting.web.SecurityUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.lang.NonNull;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
@@ -39,7 +39,9 @@ public class UniqueMailValidator implements org.springframework.validation.Valid
                             // Workaround for update with user.id=null in request body
                             // ValidationUtil.assureIdConsistent called after this validation
                             String requestURI = request.getRequestURI();
-                            if (requestURI.endsWith("/" + dbId) || (dbId == SecurityUtil.authId() && requestURI.contains("/profile")))
+                            if (requestURI.endsWith("/" + dbId) ||
+                                    (user.getEmail().equalsIgnoreCase(SecurityContextHolder.getContext().getAuthentication().getName()) &&
+                                            requestURI.contains("/profile")))
                                 return;
                         }
                         errors.rejectValue("email", "", EXCEPTION_DUPLICATE_EMAIL);

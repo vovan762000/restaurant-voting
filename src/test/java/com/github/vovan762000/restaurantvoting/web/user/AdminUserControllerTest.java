@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static com.github.vovan762000.restaurantvoting.web.user.UniqueMailValidator.EXCEPTION_DUPLICATE_EMAIL;
 import static com.github.vovan762000.restaurantvoting.web.user.UserTestData.*;
+import static com.github.vovan762000.restaurantvoting.web.user.VoteTestData.VOTE_MATCHER;
+import static com.github.vovan762000.restaurantvoting.web.user.VoteTestData.adminVotes;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -50,7 +52,7 @@ class AdminUserControllerTest extends AbstractControllerTest {
     @Test
     void getUnAuth() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -62,7 +64,15 @@ class AdminUserControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
-    void getWithVotes() {
+    void getWithVotes() throws Exception {
+        ResultActions action = perform(MockMvcRequestBuilders.get(REST_URL + "/with-votes/" + ADMIN_ID))
+                .andExpect(status().isOk())
+                .andDo(print())
+                // https://jira.spring.io/browse/SPR-14472
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(USER_MATCHER.contentJson(admin));
+        User userWithMeal = USER_MATCHER.readFromJson(action);
+        VOTE_MATCHER.assertMatch(userWithMeal.getVotes(), adminVotes);
     }
 
     @Test
@@ -110,7 +120,7 @@ class AdminUserControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void createInvalid() throws Exception {
-        User invalid = new User(null, null, "", "newPass", Role.USER, Role.ADMIN);
+        User invalid = new User(null, null, "", "newPass", Role.USER);
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonWithPassword(invalid, "newPass")))
@@ -148,7 +158,7 @@ class AdminUserControllerTest extends AbstractControllerTest {
     @Transactional(propagation = Propagation.NEVER)
     @WithUserDetails(value = ADMIN_MAIL)
     void createDuplicate() throws Exception {
-        User expected = new User(null, "New", USER_MAIL, "newPass", Role.USER, Role.ADMIN);
+        User expected = new User(null, "New", USER_MAIL, "newPass", Role.USER);
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonWithPassword(expected, "newPass")))

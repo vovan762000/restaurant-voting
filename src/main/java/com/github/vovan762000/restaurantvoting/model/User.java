@@ -55,14 +55,8 @@ public class User extends NamedEntity implements HasIdAndEmail,Serializable {
     private Date registered = new Date();
 
     @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
-            uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "role"}, name = "uk_user_roles"))
     @Column(name = "role")
-    @ElementCollection(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id") //https://stackoverflow.com/a/62848296/548473
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Set<Role> roles;
+    private Role role;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -70,25 +64,32 @@ public class User extends NamedEntity implements HasIdAndEmail,Serializable {
     private List<Vote> votes;
 
     public User(User u) {
-        this(u.id, u.name, u.email, u.password, u.enabled, u.registered, u.roles);
+        this(u.id, u.name, u.email, u.password, u.enabled, u.registered, u.role);
     }
 
-    public User(Integer id, String name, String email, String password, Role role, Role... roles) {
-        this(id, name, email, password, true, new Date(), EnumSet.of(role, roles));
+    public User(Integer id, String name, String email, String password, Role role) {
+        this(id, name, email, password, true, new Date(), role);
     }
 
-    public User(Integer id, String name, String email, String password, boolean enabled, Date registered, Collection<Role> roles) {
+    public User(Integer id, String name, String email, String password, Role role, List<Vote> votes) {
+        super(id, name);
+        this.email = email;
+        this.password = password;
+        this.enabled = true;
+        this.registered = new Date();
+        this.role = role;
+        this.votes = votes;
+    }
+
+    public User(Integer id, String name, String email, String password, boolean enabled, Date registered, Role role) {
         super(id, name);
         this.email = email;
         this.password = password;
         this.enabled = enabled;
         this.registered = registered;
-        setRoles(roles);
+        this.role = role;
     }
 
-    public void setRoles(Collection<Role> roles) {
-        this.roles = CollectionUtils.isEmpty(roles) ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles);
-    }
 
     @Override
     public String toString() {

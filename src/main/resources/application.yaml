@@ -41,6 +41,11 @@ server.servlet:
     enabled: true # Enable http encoding support
     force: true
 
+jwt:
+  secret: vovan762000
+  expiration: 604800
+  header: Authorization
+
 # Jackson Serialization Issue Resolver
 #  jackson:
 #    visibility.field: any

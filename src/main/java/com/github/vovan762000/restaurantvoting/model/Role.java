@@ -1,13 +1,25 @@
 package com.github.vovan762000.restaurantvoting.model;
 
-import org.springframework.security.core.GrantedAuthority;
+import lombok.Getter;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-public enum Role implements GrantedAuthority {
-    USER,
-    ADMIN;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-    @Override
-    public String getAuthority() {
-        return "ROLE_"+name();
+@Getter
+public enum Role {
+    USER(Set.of(Permission.SCOPE_READ)),
+    ADMIN(Set.of(Permission.SCOPE_READ, Permission.SCOPE_WRITE));
+
+    private final Set<Permission> permissions;
+
+    Role(Set<Permission> permissions) {
+        this.permissions = permissions;
+    }
+
+    public Set<SimpleGrantedAuthority> getAuthorities() {
+        return getPermissions().stream()
+                .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
+                .collect(Collectors.toSet());
     }
 }

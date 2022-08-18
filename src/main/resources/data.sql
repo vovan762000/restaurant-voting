@@ -1,11 +1,7 @@
-INSERT INTO USERS (NAME, EMAIL, PASSWORD)
-VALUES ('User', 'user@github.com', '{noop}password'),
-       ('Admin', 'admin@github.com', '{noop}admin');
+INSERT INTO USERS (NAME, EMAIL, PASSWORD,ROLE)
+VALUES ('User', 'user@github.com', '{noop}user','USER'),
+       ('Admin', 'admin@github.com', '{noop}admin','ADMIN');
 
-INSERT INTO USER_ROLE (ROLE, USER_ID)
-VALUES ('USER', 1),
-       ('ADMIN', 2),
-       ('USER', 2);
 
 INSERT INTO RESTAURANT (RESTAURANT_NAME)
 VALUES ('First restaurant'),

@@ -13,12 +13,23 @@ import java.util.List;
 @Entity
 @Table(name = "restaurant")
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @ToString(callSuper = true, exclude = {"dishes"})
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Restaurant extends BaseEntity {
+    public Restaurant(Integer id, String restaurantName, List<Dish> dishes) {
+        super(id);
+        this.restaurantName = restaurantName;
+        this.dishes = dishes;
+    }
+
+    public Restaurant(String restaurantName, List<Dish> dishes) {
+        super(null);
+        this.restaurantName = restaurantName;
+        this.dishes = dishes;
+    }
+
     @Column(name = "restaurant_name")
     @Size(max = 128)
     private String restaurantName;

@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public abstract class AbstractControllerTest {
 
     @Autowired
-    private MockMvc mockMvc;
+    protected MockMvc mockMvc;
 
     protected ResultActions perform(MockHttpServletRequestBuilder builder) throws Exception {
         return mockMvc.perform(builder);

@@ -16,6 +16,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static com.github.vovan762000.restaurantvoting.web.user.ProfileController.REST_URL;
 import static com.github.vovan762000.restaurantvoting.web.user.UniqueMailValidator.EXCEPTION_DUPLICATE_EMAIL;
 import static com.github.vovan762000.restaurantvoting.web.user.UserTestData.*;
+import static com.github.vovan762000.restaurantvoting.web.user.VoteTestData.VOTE_MATCHER;
+import static com.github.vovan762000.restaurantvoting.web.user.VoteTestData.userVotes;
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -39,18 +41,20 @@ class ProfileControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = USER_MAIL)
     void getWithVotes() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + "/with-votes"))
+        ResultActions action = perform(MockMvcRequestBuilders.get(REST_URL + "/with-votes"))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(USER_MATCHER_WITH_VOTES.contentJson(user));
+                .andExpect(USER_MATCHER.contentJson(user));
+        User userWithMeal = USER_MATCHER.readFromJson(action);
+        VOTE_MATCHER.assertMatch(userWithMeal.getVotes(), userVotes);
 
     }
 
     @Test
     void getUnAuth() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
     @Test

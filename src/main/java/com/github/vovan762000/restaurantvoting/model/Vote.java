@@ -2,7 +2,10 @@ package com.github.vovan762000.restaurantvoting.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -14,12 +17,25 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "vote")
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @ToString(callSuper = true)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Vote extends BaseEntity{
+public class Vote extends BaseEntity {
+
+    public Vote(Integer id, LocalDateTime dateTime, Restaurant restaurant, User user) {
+        super(id);
+        this.dateTime = dateTime;
+        this.restaurant = restaurant;
+        this.user = user;
+    }
+
+    public Vote(LocalDateTime dateTime, Restaurant restaurant, User user) {
+        this.dateTime = dateTime;
+        this.restaurant = restaurant;
+        this.user = user;
+    }
+
     @Column(name = "date_time", nullable = false)
     @NotNull
     private LocalDateTime dateTime;
@@ -34,7 +50,7 @@ public class Vote extends BaseEntity{
     @JsonBackReference
     private User user;
 
-    public LocalDate getDate(){
+    public LocalDate getDate() {
         return dateTime.toLocalDate();
     }
 

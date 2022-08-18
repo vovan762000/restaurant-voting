@@ -1,11 +1,30 @@
 package com.github.vovan762000.restaurantvoting.web.user;
 
-import com.github.vovan762000.restaurantvoting.model.Restaurant;
 import com.github.vovan762000.restaurantvoting.model.Vote;
+import com.github.vovan762000.restaurantvoting.web.MatcherFactory;
 
+import java.util.List;
+
+import static com.github.vovan762000.restaurantvoting.web.user.UserTestData.admin;
 import static com.github.vovan762000.restaurantvoting.web.user.UserTestData.user;
 import static java.time.LocalDateTime.of;
 
 public class VoteTestData {
-    public static final Vote USER_VOTE_1 = new Vote(of(2022,01,01,11,00), new Restaurant("First restaurant",null), user);
+
+    public static final MatcherFactory.Matcher<Vote> VOTE_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Vote.class, "user");
+    public static final int USER_VOTE_1_ID = 1;
+    public static final int USER_VOTE_2_ID = 2;
+    public static final int USER_VOTE_3_ID = 5;
+    public static final int ADMIN_VOTE_1_ID = 3;
+    public static final int ADMIN_VOTE_2_ID = 4;
+
+
+    public static final Vote USER_VOTE_1 = new Vote(USER_VOTE_1_ID, of(2022, 1, 1, 11, 0), RestaurantTeatData.RESTAURANT_1, user);
+    public static final Vote USER_VOTE_2 = new Vote(USER_VOTE_2_ID, of(2022, 2, 1, 11, 0), RestaurantTeatData.RESTAURANT_2, user);
+    public static final Vote USER_VOTE_3 = new Vote(USER_VOTE_3_ID, of(2022, 8, 1, 11, 0), RestaurantTeatData.RESTAURANT_1, user);
+    public static final Vote ADMIN_VOTE_1 = new Vote(ADMIN_VOTE_1_ID, of(2022, 1, 1, 14, 0), RestaurantTeatData.RESTAURANT_1, admin);
+    public static final Vote ADMIN_VOTE_2 = new Vote(ADMIN_VOTE_2_ID, of(2022, 6, 1, 17, 0), RestaurantTeatData.RESTAURANT_1, admin);
+
+    public static final List<Vote> userVotes = List.of(USER_VOTE_1, USER_VOTE_2, USER_VOTE_3);
+    public static final List<Vote> adminVotes = List.of(ADMIN_VOTE_1,ADMIN_VOTE_2);
 }
