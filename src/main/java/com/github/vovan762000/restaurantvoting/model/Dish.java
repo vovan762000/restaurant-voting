@@ -7,14 +7,11 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "dish")
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -22,12 +19,21 @@ import java.math.BigDecimal;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Dish extends BaseEntity {
 
+    public Dish(Integer id, String dishName, BigDecimal price, Restaurant restaurant) {
+        super(id);
+        this.dishName = dishName;
+        this.price = price;
+        this.restaurant = restaurant;
+    }
+
     @Column(name = "dish_name")
     @Size(max = 128)
+    @NotBlank
     private String dishName;
 
     @DecimalMin(value = "0.0", inclusive = false)
     @Digits(integer = 3, fraction = 2)
+    @NotNull
     private BigDecimal price;
 
     @ManyToOne(fetch = FetchType.LAZY)

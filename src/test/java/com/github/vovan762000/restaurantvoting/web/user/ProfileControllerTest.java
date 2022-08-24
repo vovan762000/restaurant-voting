@@ -61,6 +61,7 @@ class ProfileControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = USER_MAIL)
     void delete() throws Exception {
         perform(MockMvcRequestBuilders.delete(REST_URL))
+                .andDo(print())
                 .andExpect(status().isNoContent());
         USER_MATCHER.assertMatch(userRepository.findAll(), admin);
     }

@@ -24,7 +24,7 @@ import static com.github.vovan762000.restaurantvoting.util.validation.Validation
 @AllArgsConstructor
 @RequestMapping(value = RestaurantController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestaurantController {
-    static final String REST_URL = "/api/profile/restaurant";
+    static final String REST_URL = "/api/restaurant";
     private final RestaurantRepository repository;
 
     @GetMapping("/{id}")
@@ -69,8 +69,9 @@ public class RestaurantController {
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
-    @DeleteMapping
+    @DeleteMapping(value = "/{id}")
     @PreAuthorize("hasAuthority('scope:write')")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
         log.info("delete restaurant {}", id);
         repository.deleteExisted(id);

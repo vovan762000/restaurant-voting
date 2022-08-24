@@ -40,7 +40,7 @@ public class Vote extends BaseEntity {
     @NotNull
     private LocalDateTime dateTime;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
 
