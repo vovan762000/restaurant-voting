@@ -5,7 +5,7 @@ import com.github.vovan762000.restaurantvoting.web.MatcherFactory;
 
 import java.util.List;
 
-import static com.github.vovan762000.restaurantvoting.web.restaurant.DishTestData.firstRestaurantDishes;
+import static com.github.vovan762000.restaurantvoting.web.dish.DishTestData.firstRestaurantDishes;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class RestaurantTestData {
