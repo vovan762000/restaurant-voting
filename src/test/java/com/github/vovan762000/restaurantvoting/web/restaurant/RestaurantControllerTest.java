@@ -71,16 +71,16 @@ class RestaurantControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void create() throws Exception {
-        Restaurant newMeal = getNew();
+        Restaurant newRestaurant = getNew();
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(newMeal)));
+                .content(JsonUtil.writeValue(newRestaurant)));
 
         Restaurant created = RESTAURANT_MATCHER.readFromJson(action);
         int newId = created.id();
-        newMeal.setId(newId);
-        RESTAURANT_MATCHER.assertMatch(created, newMeal);
-        RESTAURANT_MATCHER.assertMatch(repository.getById(newId), newMeal);
+        newRestaurant.setId(newId);
+        RESTAURANT_MATCHER.assertMatch(created, newRestaurant);
+        RESTAURANT_MATCHER.assertMatch(repository.getById(newId), newRestaurant);
     }
 
     @Test

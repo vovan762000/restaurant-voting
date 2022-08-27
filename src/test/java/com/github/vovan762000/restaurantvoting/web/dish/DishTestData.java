@@ -19,7 +19,6 @@ public class DishTestData {
     public static final int SECOND_RES_DISH_1_ID = 5;
     public static final int SECOND_RES_DISH_2_ID = 6;
     public static final int SECOND_RES_DISH_3_ID = 7;
-    public static final int NOT_FOUND = 100;
 
     public static final Dish FIRST_RES_DISH_1 = new Dish(FIRST_RES_DISH_1_ID, "first restaurant dish 1", new BigDecimal("10.99"), RESTAURANT_1);
     public static final Dish FIRST_RES_DISH_2 = new Dish(FIRST_RES_DISH_2_ID, "first restaurant dish 2", new BigDecimal("5.00"), RESTAURANT_1);
@@ -33,7 +32,7 @@ public class DishTestData {
     public static final List<Dish> secondRestaurantDishes = List.of(SECOND_RES_DISH_1, SECOND_RES_DISH_2, SECOND_RES_DISH_3);
 
     public static Dish getNew() {
-        return new Dish(null, "New Dish", new BigDecimal("1.00"), RESTAURANT_1);
+        return new Dish(null, "New Dish for restaurant 1", new BigDecimal("1.00"));
     }
 
     public static Dish getUpdated() {

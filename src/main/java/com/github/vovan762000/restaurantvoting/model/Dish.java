@@ -26,6 +26,12 @@ public class Dish extends BaseEntity {
         this.restaurant = restaurant;
     }
 
+    public Dish(Integer id, String dishName, BigDecimal price) {
+        super(id);
+        this.dishName = dishName;
+        this.price = price;
+    }
+
     @Column(name = "dish_name")
     @Size(max = 128)
     @NotBlank
