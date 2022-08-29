@@ -12,7 +12,6 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "vote")
@@ -23,22 +22,22 @@ import java.time.LocalDateTime;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Vote extends BaseEntity {
 
-    public Vote(Integer id, LocalDateTime dateTime, Restaurant restaurant, User user) {
+    public Vote(Integer id, LocalDate date, Restaurant restaurant, User user) {
         super(id);
-        this.dateTime = dateTime;
+        this.date = date;
         this.restaurant = restaurant;
         this.user = user;
     }
 
-    public Vote(LocalDateTime dateTime, Restaurant restaurant, User user) {
-        this.dateTime = dateTime;
+    public Vote(LocalDate date, Restaurant restaurant, User user) {
+        this.date = date;
         this.restaurant = restaurant;
         this.user = user;
     }
 
-    @Column(name = "date_time", nullable = false)
+    @Column(name = "date", nullable = false)
     @NotNull
-    private LocalDateTime dateTime;
+    private LocalDate date;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "restaurant_id", nullable = false)
@@ -49,9 +48,4 @@ public class Vote extends BaseEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonBackReference
     private User user;
-
-    public LocalDate getDate() {
-        return dateTime.toLocalDate();
-    }
-
 }

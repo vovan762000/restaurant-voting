@@ -22,8 +22,4 @@ public class DishService {
         dish.setRestaurant(restaurantRepository.getById(restaurantId));
         return dishRepository.save(dish);
     }
-
-    public Dish update(Dish dish,int restaurantId){
-        return null;
-    }
 }
