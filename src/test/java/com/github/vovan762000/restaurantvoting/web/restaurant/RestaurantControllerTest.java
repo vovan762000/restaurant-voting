@@ -138,7 +138,16 @@ class RestaurantControllerTest extends AbstractControllerTest {
             perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT_1_ID + "/with-votes"))
                     .andExpect(status().isOk())
                     .andDo(print())
-                    .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-;
+                    .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    @WithUserDetails(value = USER_MAIL)
+    void getWithVotesByDay() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT_1_ID + "/with-votesByDay")
+                .param("date","2022-01-01"))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
     }
 }

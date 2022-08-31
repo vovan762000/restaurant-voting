@@ -21,8 +21,4 @@ public class VoteService {
         vote.setUser(userRepository.getById(userId));
         return mealRepository.save(vote);
     }
-
-    public Vote update(Vote vote,int userId){
-        return null;
-    }
 }

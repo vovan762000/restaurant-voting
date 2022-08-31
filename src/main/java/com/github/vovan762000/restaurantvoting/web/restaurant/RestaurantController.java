@@ -2,18 +2,22 @@ package com.github.vovan762000.restaurantvoting.web.restaurant;
 
 import com.github.vovan762000.restaurantvoting.model.Restaurant;
 import com.github.vovan762000.restaurantvoting.repository.RestaurantRepository;
+import com.github.vovan762000.restaurantvoting.service.RestaurantService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
 import static com.github.vovan762000.restaurantvoting.util.validation.ValidationUtil.assureIdConsistent;
@@ -26,6 +30,8 @@ import static com.github.vovan762000.restaurantvoting.util.validation.Validation
 public class RestaurantController {
     static final String REST_URL = "/api/restaurants";
     private final RestaurantRepository repository;
+
+    private final RestaurantService service;
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('scope:read')")
@@ -53,6 +59,14 @@ public class RestaurantController {
     public ResponseEntity<Restaurant> getWithVotes(@PathVariable int id) {
         log.info("get restaurant {} with votes", id);
         return ResponseEntity.of(repository.getWithVotes(id));
+    }
+
+    @GetMapping("/{id}/with-votesByDay")
+    @PreAuthorize("hasAuthority('scope:read')")
+    public ResponseEntity<Restaurant> getWithVotesByDay(@PathVariable int id,
+                                                        @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        log.info("get restaurant {} with votes", id);
+        return ResponseEntity.of(service.getWithVotesByDay(id,date));
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
