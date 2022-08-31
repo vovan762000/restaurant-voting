@@ -14,4 +14,8 @@ public interface RestaurantRepository extends BaseRepository<Restaurant> {
     @EntityGraph(attributePaths = {"dishes"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT r FROM Restaurant r WHERE r.id = :id")
     Optional<Restaurant> getWithDishes(int id);
+
+    @EntityGraph(attributePaths = {"votes"},type = EntityGraph.EntityGraphType.LOAD)
+    @Query("SELECT r FROM Restaurant r WHERE r.id=:id")
+    Optional<Restaurant> getWithVotes(int id);
 }

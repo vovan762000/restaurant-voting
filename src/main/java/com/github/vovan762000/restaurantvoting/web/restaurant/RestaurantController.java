@@ -48,7 +48,14 @@ public class RestaurantController {
         return ResponseEntity.of(repository.getWithDishes(id));
     }
 
-    @PutMapping( value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping("/{id}/with-votes")
+    @PreAuthorize("hasAuthority('scope:read')")
+    public ResponseEntity<Restaurant> getWithVotes(@PathVariable int id) {
+        log.info("get restaurant {} with votes", id);
+        return ResponseEntity.of(repository.getWithVotes(id));
+    }
+
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasAuthority('scope:write')")
     public void update(@Valid @RequestBody Restaurant restaurant, @PathVariable int id) {

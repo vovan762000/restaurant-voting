@@ -131,4 +131,14 @@ class RestaurantControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
+
+    @Test
+    @WithUserDetails(value = USER_MAIL)
+    void getWithVotes() throws Exception {
+            perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT_1_ID + "/with-votes"))
+                    .andExpect(status().isOk())
+                    .andDo(print())
+                    .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+;
+    }
 }

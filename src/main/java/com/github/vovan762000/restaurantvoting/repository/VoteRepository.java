@@ -12,7 +12,7 @@ public interface VoteRepository extends BaseRepository<Vote> {
     @Query("SELECT v FROM Vote v WHERE v.id = :id AND v.user.id=:userId")
     Optional<Vote> get(int id, int userId);
 
-    @Query("SELECT v FROM Vote v WHERE v.user.id=:userId ORDER BY v.dateTime DESC")
+    @Query("SELECT v FROM Vote v WHERE v.user.id=:userId ORDER BY v.date DESC")
     List<Vote> getAllForUser(int userId);
 
     default Vote checkBelong(int id, int userId) {
