@@ -14,17 +14,15 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.time.LocalTime;
 
 import static com.github.vovan762000.restaurantvoting.web.restaurant.RestaurantTestData.RESTAURANT_2;
-import static com.github.vovan762000.restaurantvoting.web.user.UserTestData.ADMIN_MAIL;
 import static com.github.vovan762000.restaurantvoting.web.user.UserTestData.USER_MAIL;
 import static com.github.vovan762000.restaurantvoting.web.vote.VoteTestData.*;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class VoteControllerTest extends AbstractControllerTest {
+class ProfileVoteControllerTest extends AbstractControllerTest {
 
-    private static final String REST_URL = VoteController.REST_URL + '/';
+    private static final String REST_URL = ProfileVoteController.REST_URL + '/';
     @Autowired
     private VoteRepository repository;
 
@@ -40,21 +38,20 @@ class VoteControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = USER_MAIL)
+    void getNotOwn() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL + ADMIN_VOTE_1_ID))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithUserDetails(value = USER_MAIL)
     void getAllForUser() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(VOTE_MATCHER.contentJson(userVotes));
-    }
-
-    @Test
-    @WithUserDetails(value = ADMIN_MAIL)
-    void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + ADMIN_VOTE_1_ID))
-                .andDo(print())
-                .andExpect(status().isNoContent());
-        assertFalse(repository.findById(ADMIN_VOTE_1_ID).isPresent());
     }
 
     @Test

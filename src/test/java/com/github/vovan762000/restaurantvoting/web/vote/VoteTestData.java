@@ -37,6 +37,10 @@ public class VoteTestData {
         return new Vote(USER_VOTE_1_ID, of(2022, 1, 1), RestaurantTestData.RESTAURANT_2, user);
     }
 
+    public static final List<Vote> votes = Stream.of(USER_VOTE_1, USER_VOTE_2, USER_VOTE_3,ADMIN_VOTE_1, ADMIN_VOTE_2)
+            .sorted(Comparator.comparing(Vote::getDate).reversed())
+            .collect(Collectors.toList());
+
     public static final List<Vote> userVotes = Stream.of(USER_VOTE_1, USER_VOTE_2, USER_VOTE_3)
             .sorted(Comparator.comparing(Vote::getDate).reversed())
             .collect(Collectors.toList());

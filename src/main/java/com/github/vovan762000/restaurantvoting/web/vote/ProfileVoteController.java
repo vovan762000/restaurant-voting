@@ -29,10 +29,10 @@ import static com.github.vovan762000.restaurantvoting.util.validation.Validation
 import static com.github.vovan762000.restaurantvoting.util.validation.ValidationUtil.checkNew;
 
 @RestController
-@RequestMapping(value = VoteController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = ProfileVoteController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 @AllArgsConstructor
-public class VoteController {
+public class ProfileVoteController {
     static final String REST_URL = "/api/profile/votes";
 
     private final VoteRepository voteRepository;
@@ -62,15 +62,6 @@ public class VoteController {
     public List<Vote> getAllForUser(@AuthenticationPrincipal UserDetails authUser) {
         log.info("get all votes");
         return voteRepository.getAllForUser(getAuthUserId(authUser));
-    }
-
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasAuthority('scope:admin_permission')")
-    public void delete(@AuthenticationPrincipal UserDetails authUser, @PathVariable int id) {
-        log.info("delete {} for user {}", id, getAuthUserId(authUser));
-        Vote vote = voteRepository.checkBelong(id, getAuthUserId(authUser));
-        voteRepository.delete(vote);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
