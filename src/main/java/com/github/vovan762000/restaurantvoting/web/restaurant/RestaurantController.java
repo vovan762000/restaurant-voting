@@ -34,35 +34,35 @@ public class RestaurantController {
     private final RestaurantService service;
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('scope:read')")
+    @PreAuthorize("hasAuthority('scope:user_permission')")
     public ResponseEntity<Restaurant> get(@PathVariable int id) {
         log.info("get restaurant {}", id);
         return ResponseEntity.of(repository.get(id));
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('scope:read')")
+    @PreAuthorize("hasAuthority('scope:user_permission')")
     public List<Restaurant> getAll() {
         log.info("get all restaurants");
         return repository.findAll(Sort.by(Sort.Direction.ASC, "restaurantName"));
     }
 
     @GetMapping("/{id}/with-dishes")
-    @PreAuthorize("hasAuthority('scope:read')")
+    @PreAuthorize("hasAuthority('scope:user_permission')")
     public ResponseEntity<Restaurant> getWithDishes(@PathVariable int id) {
         log.info("get restaurant {} with dishes", id);
         return ResponseEntity.of(repository.getWithDishes(id));
     }
 
     @GetMapping("/{id}/with-votes")
-    @PreAuthorize("hasAuthority('scope:read')")
+    @PreAuthorize("hasAuthority('scope:user_permission')")
     public ResponseEntity<Restaurant> getWithVotes(@PathVariable int id) {
         log.info("get restaurant {} with votes", id);
         return ResponseEntity.of(repository.getWithVotes(id));
     }
 
     @GetMapping("/{id}/with-votesByDay")
-    @PreAuthorize("hasAuthority('scope:read')")
+    @PreAuthorize("hasAuthority('scope:user_permission')")
     public ResponseEntity<Restaurant> getWithVotesByDay(@PathVariable int id,
                                                         @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         log.info("get restaurant {} with votes", id);
@@ -71,7 +71,7 @@ public class RestaurantController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasAuthority('scope:write')")
+    @PreAuthorize("hasAuthority('scope:admin_permission')")
     public void update(@Valid @RequestBody Restaurant restaurant, @PathVariable int id) {
         log.info("update restaurant {} with id {}", restaurant, id);
         assureIdConsistent(restaurant, id);
@@ -79,7 +79,7 @@ public class RestaurantController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('scope:write')")
+    @PreAuthorize("hasAuthority('scope:admin_permission')")
     public ResponseEntity<Restaurant> create(@Valid @RequestBody Restaurant restaurant) {
         log.info("create restaurant {}", restaurant);
         checkNew(restaurant);
@@ -91,7 +91,7 @@ public class RestaurantController {
     }
 
     @DeleteMapping(value = "/{id}")
-    @PreAuthorize("hasAuthority('scope:write')")
+    @PreAuthorize("hasAuthority('scope:admin_permission')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
         log.info("delete restaurant {}", id);

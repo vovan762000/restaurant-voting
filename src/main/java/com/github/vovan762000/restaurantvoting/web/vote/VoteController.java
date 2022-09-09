@@ -51,14 +51,14 @@ public class VoteController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('scope:read')")
+    @PreAuthorize("hasAuthority('scope:user_permission')")
     public ResponseEntity<Vote> get(@AuthenticationPrincipal UserDetails authUser, @PathVariable int id) {
         log.info("get vote {} for user {}", id, getAuthUserId(authUser));
         return ResponseEntity.of(voteRepository.get(id, getAuthUserId(authUser)));
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('scope:read')")
+    @PreAuthorize("hasAuthority('scope:user_permission')")
     public List<Vote> getAllForUser(@AuthenticationPrincipal UserDetails authUser) {
         log.info("get all votes");
         return voteRepository.getAllForUser(getAuthUserId(authUser));
@@ -66,7 +66,7 @@ public class VoteController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasAuthority('scope:read')")
+    @PreAuthorize("hasAuthority('scope:admin_permission')")
     public void delete(@AuthenticationPrincipal UserDetails authUser, @PathVariable int id) {
         log.info("delete {} for user {}", id, getAuthUserId(authUser));
         Vote vote = voteRepository.checkBelong(id, getAuthUserId(authUser));
@@ -74,7 +74,7 @@ public class VoteController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('scope:read')")
+    @PreAuthorize("hasAuthority('scope:user_permission')")
     public ResponseEntity<Vote> create(@Valid @RequestBody Vote vote,
                                        @AuthenticationPrincipal UserDetails authUser,
                                        @RequestParam @Nullable int restaurantId) {
@@ -91,7 +91,7 @@ public class VoteController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasAuthority('scope:read')")
+    @PreAuthorize("hasAuthority('scope:user_permission')")
     public void update(@Valid @RequestBody Vote vote, @AuthenticationPrincipal UserDetails authUser, @PathVariable int id) {
         int userId = getAuthUserId(authUser);
         log.info("update {} for user {}", vote, userId);

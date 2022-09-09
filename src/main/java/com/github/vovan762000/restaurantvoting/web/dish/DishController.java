@@ -30,14 +30,14 @@ public class DishController {
     private final DishService service;
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('scope:read')")
+    @PreAuthorize("hasAuthority('scope:user_permission')")
     public ResponseEntity<Dish> get(@PathVariable int id, @PathVariable int restaurantId) {
         log.info("get dish {} for restaurant {}", id,restaurantId);
         return ResponseEntity.of(repository.get(id, restaurantId));
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('scope:read')")
+    @PreAuthorize("hasAuthority('scope:user_permission')")
     public List<Dish> getAll(@PathVariable int restaurantId) {
         log.info("get all dishes for restaurant {}",restaurantId);
         return repository.getAll(restaurantId);
@@ -45,7 +45,7 @@ public class DishController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasAuthority('scope:write')")
+    @PreAuthorize("hasAuthority('scope:admin_permission')")
     public void update(@Valid @RequestBody Dish dish, @PathVariable int id, @PathVariable int restaurantId) {
         log.info("update dish {} with id {} for restaurant {}", dish, id ,restaurantId);
         assureIdConsistent(dish, id);
@@ -54,7 +54,7 @@ public class DishController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('scope:write')")
+    @PreAuthorize("hasAuthority('scope:admin_permission')")
     public ResponseEntity<Dish> create(@Valid @RequestBody Dish dish, @PathVariable int restaurantId) {
         log.info("create dish {} for restaurant {}", dish, restaurantId);
         checkNew(dish);
@@ -66,7 +66,7 @@ public class DishController {
     }
 
     @DeleteMapping(value = "/{id}")
-    @PreAuthorize("hasAuthority('scope:write')")
+    @PreAuthorize("hasAuthority('scope:admin_permission')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id, @PathVariable int restaurantId) {
         log.info("delete dish {} for restaurant {}", id, restaurantId);

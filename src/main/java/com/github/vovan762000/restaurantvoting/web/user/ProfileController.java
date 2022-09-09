@@ -29,20 +29,20 @@ public class ProfileController extends AbstractUserController {
     static final String REST_URL = "/api/profile";
 
     @GetMapping
-    @PreAuthorize("hasAuthority('scope:read')")
+    @PreAuthorize("hasAuthority('scope:user_permission')")
     public ResponseEntity<User> get(@AuthenticationPrincipal UserDetails authUser) {
         return super.get(getAuthUserId(authUser));
     }
 
     @GetMapping("/with-votes")
-    @PreAuthorize("hasAuthority('scope:read')")
+    @PreAuthorize("hasAuthority('scope:user_permission')")
     public ResponseEntity<User> getWithVotes(@AuthenticationPrincipal UserDetails authUser) {
         return super.getWithVotes(getAuthUserId(authUser));
     }
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasAuthority('scope:read')")
+    @PreAuthorize("hasAuthority('scope:user_permission')")
     public void delete(@AuthenticationPrincipal UserDetails authUser) {
         super.delete(getAuthUserId(authUser));
     }
@@ -60,7 +60,7 @@ public class ProfileController extends AbstractUserController {
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasAuthority('scope:read')")
+    @PreAuthorize("hasAuthority('scope:user_permission')")
     @Transactional
     public void update(@RequestBody @Valid UserTo userTo, @AuthenticationPrincipal UserDetails authUser) {
         assureIdConsistent(userTo, getAuthUserId(authUser));

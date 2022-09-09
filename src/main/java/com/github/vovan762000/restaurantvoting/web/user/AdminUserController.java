@@ -27,14 +27,14 @@ public class AdminUserController extends AbstractUserController {
 
     @Override
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('scope:write')")
+    @PreAuthorize("hasAuthority('scope:admin_permission')")
     public ResponseEntity<User> get(@PathVariable int id) {
         return super.get(id);
     }
 
     @Override
     @GetMapping("/with-votes/{id}")
-    @PreAuthorize("hasAuthority('scope:write')")
+    @PreAuthorize("hasAuthority('scope:admin_permission')")
     public ResponseEntity<User> getWithVotes(@PathVariable int id){
         return super.getWithVotes(id);
     }
@@ -42,20 +42,20 @@ public class AdminUserController extends AbstractUserController {
     @Override
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasAuthority('scope:write')")
+    @PreAuthorize("hasAuthority('scope:admin_permission')")
     public void delete(@PathVariable int id) {
         super.delete(id);
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('scope:write')")
+    @PreAuthorize("hasAuthority('scope:admin_permission')")
     public List<User> getAll() {
         log.info("getAll");
         return repository.findAll(Sort.by(Sort.Direction.ASC, "name", "email"));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('scope:write')")
+    @PreAuthorize("hasAuthority('scope:admin_permission')")
     public ResponseEntity<User> createWithLocation(@Valid @RequestBody User user) {
         log.info("create {}", user);
         checkNew(user);
@@ -68,7 +68,7 @@ public class AdminUserController extends AbstractUserController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasAuthority('scope:write')")
+    @PreAuthorize("hasAuthority('scope:admin_permission')")
 //    @CacheEvict(allEntries = true)
     public void update(@Valid @RequestBody User user, @PathVariable int id) {
         log.info("update {} with id={}", user, id);
@@ -77,7 +77,7 @@ public class AdminUserController extends AbstractUserController {
     }
 
     @GetMapping("/by-email")
-    @PreAuthorize("hasAuthority('scope:write')")
+    @PreAuthorize("hasAuthority('scope:admin_permission')")
     public ResponseEntity<User> getByEmail(@RequestParam String email) {
         log.info("getByEmail {}", email);
         return ResponseEntity.of(repository.getByEmail(email));
@@ -85,7 +85,7 @@ public class AdminUserController extends AbstractUserController {
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasAuthority('scope:write')")
+    @PreAuthorize("hasAuthority('scope:admin_permission')")
     @Transactional
 //    @CacheEvict(allEntries = true)
     public void enable(@PathVariable int id, @RequestParam boolean enabled) {

@@ -5,8 +5,8 @@ import lombok.Getter;
 @Getter
 public enum Permission {
 
-    SCOPE_READ("scope:read"),
-    SCOPE_WRITE("scope:write");
+    SCOPE_USER_PERMISSION("scope:user_permission"),
+    SCOPE_ADMIN_PERMISSION("scope:admin_permission");
 
     private final String permission;
 
