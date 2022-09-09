@@ -40,7 +40,7 @@ public class UniqueVoteValidator implements org.springframework.validation.Valid
                         errors.rejectValue("date", "", EXCEPTION_DUPLICATE_DAY_OR_TOO_LATE);
                     });
         } else {
-            voteRepository.get(vote.getId(), vote.getUser().getId())
+            voteRepository.get(vote.getId(), authUser.getId())
                     .ifPresent(dbVote -> {
                         if (request.getMethod().equals("PUT")) {  // UPDATE
                             int dbId = dbVote.id();

@@ -4,6 +4,7 @@ import com.github.vovan762000.restaurantvoting.model.Role;
 import com.github.vovan762000.restaurantvoting.model.User;
 import com.github.vovan762000.restaurantvoting.util.JsonUtil;
 import com.github.vovan762000.restaurantvoting.web.MatcherFactory;
+import com.github.vovan762000.restaurantvoting.web.vote.VoteTestData;
 
 import java.util.Date;
 

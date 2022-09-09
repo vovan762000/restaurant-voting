@@ -10,7 +10,7 @@ import static com.github.vovan762000.restaurantvoting.web.dish.DishTestData.seco
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class RestaurantTestData {
-    public static final MatcherFactory.Matcher<Restaurant> RESTAURANT_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Restaurant.class, "dishes");
+    public static final MatcherFactory.Matcher<Restaurant> RESTAURANT_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Restaurant.class, "dishes","votes");
     public static MatcherFactory.Matcher<Restaurant> RESTAURANT_MATCHER_WITH_DISHES =
             MatcherFactory.usingAssertions(Restaurant.class,
                     (a, e) -> assertThat(a).usingRecursiveComparison()

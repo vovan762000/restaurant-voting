@@ -15,8 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static com.github.vovan762000.restaurantvoting.web.user.UniqueMailValidator.EXCEPTION_DUPLICATE_EMAIL;
 import static com.github.vovan762000.restaurantvoting.web.user.UserTestData.*;
-import static com.github.vovan762000.restaurantvoting.web.user.VoteTestData.VOTE_MATCHER;
-import static com.github.vovan762000.restaurantvoting.web.user.VoteTestData.adminVotes;
+import static com.github.vovan762000.restaurantvoting.web.vote.VoteTestData.VOTE_MATCHER;
+import static com.github.vovan762000.restaurantvoting.web.vote.VoteTestData.adminVotes;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;

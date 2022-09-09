@@ -1,7 +1,6 @@
 package com.github.vovan762000.restaurantvoting.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -18,6 +17,9 @@ import java.util.List;
 @Setter
 @ToString(callSuper = true, exclude = {"dishes"})
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "id")
 public class Restaurant extends BaseEntity {
     public Restaurant(Integer id, String restaurantName, List<Dish> dishes) {
         super(id);
@@ -38,11 +40,11 @@ public class Restaurant extends BaseEntity {
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "restaurant")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonManagedReference
+    @JsonManagedReference(value = "restaurant-vote")
     private List<Vote> votes;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonManagedReference
+    @JsonManagedReference(value = "restaurant-dish")
     private List<Dish> dishes;
 }

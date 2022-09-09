@@ -2,16 +2,16 @@ package com.github.vovan762000.restaurantvoting.web.vote;
 
 import com.github.vovan762000.restaurantvoting.model.User;
 import com.github.vovan762000.restaurantvoting.model.Vote;
+import com.github.vovan762000.restaurantvoting.repository.RestaurantRepository;
 import com.github.vovan762000.restaurantvoting.repository.UserRepository;
 import com.github.vovan762000.restaurantvoting.repository.VoteRepository;
 import com.github.vovan762000.restaurantvoting.service.VoteService;
-import com.github.vovan762000.restaurantvoting.web.AuthUser;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,9 +35,11 @@ import static com.github.vovan762000.restaurantvoting.util.validation.Validation
 public class VoteController {
     static final String REST_URL = "/api/profile/votes";
 
-    private final VoteRepository repository;
+    private final VoteRepository voteRepository;
 
     private final UserRepository userRepository;
+
+    private final RestaurantRepository restaurantRepository;
 
     private final UniqueVoteValidator voteValidator;
 
@@ -52,14 +54,14 @@ public class VoteController {
     @PreAuthorize("hasAuthority('scope:read')")
     public ResponseEntity<Vote> get(@AuthenticationPrincipal UserDetails authUser, @PathVariable int id) {
         log.info("get vote {} for user {}", id, getAuthUserId(authUser));
-        return ResponseEntity.of(repository.get(id, getAuthUserId(authUser)));
+        return ResponseEntity.of(voteRepository.get(id, getAuthUserId(authUser)));
     }
 
     @GetMapping
     @PreAuthorize("hasAuthority('scope:read')")
-    public List<Vote> getAllForUser(@AuthenticationPrincipal UserDetails authUser){
+    public List<Vote> getAllForUser(@AuthenticationPrincipal UserDetails authUser) {
         log.info("get all votes");
-        return repository.getAllForUser(getAuthUserId(authUser));
+        return voteRepository.getAllForUser(getAuthUserId(authUser));
     }
 
     @DeleteMapping("/{id}")
@@ -67,15 +69,18 @@ public class VoteController {
     @PreAuthorize("hasAuthority('scope:read')")
     public void delete(@AuthenticationPrincipal UserDetails authUser, @PathVariable int id) {
         log.info("delete {} for user {}", id, getAuthUserId(authUser));
-        Vote vote = repository.checkBelong(id, getAuthUserId(authUser));
-        repository.delete(vote);
+        Vote vote = voteRepository.checkBelong(id, getAuthUserId(authUser));
+        voteRepository.delete(vote);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('scope:read')")
-    public ResponseEntity<Vote> createWithLocation(@Valid @RequestBody Vote vote,@AuthenticationPrincipal UserDetails authUser) {
+    public ResponseEntity<Vote> create(@Valid @RequestBody Vote vote,
+                                       @AuthenticationPrincipal UserDetails authUser,
+                                       @RequestParam @Nullable int restaurantId) {
         int userId = getAuthUserId(authUser);
-        log.info("create {} for user {}", vote, userId);
+        vote.setRestaurant(restaurantRepository.getById(restaurantId));
+        log.info("create {} for user {} for restaurant {}", vote, userId, restaurantId);
         checkNew(vote);
         Vote created = service.save(vote, userId);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -87,11 +92,11 @@ public class VoteController {
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasAuthority('scope:read')")
-    public void update(@AuthenticationPrincipal UserDetails authUser, @Valid @RequestBody Vote vote, @PathVariable int id) {
+    public void update(@Valid @RequestBody Vote vote, @AuthenticationPrincipal UserDetails authUser, @PathVariable int id) {
         int userId = getAuthUserId(authUser);
         log.info("update {} for user {}", vote, userId);
         assureIdConsistent(vote, id);
-        repository.checkBelong(id, userId);
+        voteRepository.checkBelong(id, userId);
         service.save(vote, userId);
     }
 

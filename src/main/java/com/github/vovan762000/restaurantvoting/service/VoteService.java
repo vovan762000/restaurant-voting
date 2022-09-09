@@ -7,18 +7,15 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 @Service
 @AllArgsConstructor
 public class VoteService {
-    private final VoteRepository mealRepository;
+    private final VoteRepository voteRepository;
     private final UserRepository userRepository;
 
     @Transactional
     public Vote save(Vote vote, int userId) {
         vote.setUser(userRepository.getById(userId));
-        return mealRepository.save(vote);
+        return voteRepository.save(vote);
     }
 }

@@ -1,9 +1,6 @@
 package com.github.vovan762000.restaurantvoting.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 import com.github.vovan762000.restaurantvoting.HasIdAndEmail;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -28,6 +25,9 @@ import java.util.*;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "id")
 public class User extends NamedEntity implements HasIdAndEmail,Serializable {
 
     @Serial
@@ -60,7 +60,7 @@ public class User extends NamedEntity implements HasIdAndEmail,Serializable {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonManagedReference
+    @JsonManagedReference(value = "vote-user")
     private List<Vote> votes;
 
     public User(User u) {
