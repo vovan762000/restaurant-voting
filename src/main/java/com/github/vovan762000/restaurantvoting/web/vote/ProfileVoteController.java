@@ -15,15 +15,14 @@ import org.springframework.lang.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
-import java.util.Objects;
 
 import static com.github.vovan762000.restaurantvoting.util.validation.ValidationUtil.assureIdConsistent;
 import static com.github.vovan762000.restaurantvoting.util.validation.ValidationUtil.checkNew;
@@ -92,8 +91,8 @@ public class ProfileVoteController {
     }
 
     private int getAuthUserId(@AuthenticationPrincipal UserDetails authUser) {
-        User user = Objects.requireNonNull(userRepository.getByEmail(authUser.getUsername()))
-                .orElseThrow(() -> new UsernameNotFoundException("User doesn't exists"));
+        User user = userRepository.getByEmail(authUser.getUsername())
+                .orElseThrow(() -> new EntityNotFoundException("User doesn't exists"));
         return user.getId();
     }
 }

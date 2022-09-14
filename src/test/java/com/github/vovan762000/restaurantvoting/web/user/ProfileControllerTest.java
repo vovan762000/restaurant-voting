@@ -1,6 +1,7 @@
 package com.github.vovan762000.restaurantvoting.web.user;
 
 import com.github.vovan762000.restaurantvoting.model.User;
+import com.github.vovan762000.restaurantvoting.model.Vote;
 import com.github.vovan762000.restaurantvoting.repository.UserRepository;
 import com.github.vovan762000.restaurantvoting.to.UserTo;
 import com.github.vovan762000.restaurantvoting.util.JsonUtil;
@@ -12,6 +13,10 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import static com.github.vovan762000.restaurantvoting.web.user.ProfileController.REST_URL;
 import static com.github.vovan762000.restaurantvoting.web.user.UniqueMailValidator.EXCEPTION_DUPLICATE_EMAIL;
@@ -47,7 +52,9 @@ class ProfileControllerTest extends AbstractControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(USER_MATCHER.contentJson(user));
         User userWithMeal = USER_MATCHER.readFromJson(action);
-        VOTE_MATCHER.assertMatch(userWithMeal.getVotes(), userVotes);
+        List<Vote> votes = userWithMeal.getVotes();
+        Collections.sort(votes, Comparator.comparing(Vote::getDate).reversed());
+        VOTE_MATCHER.assertMatch(votes, userVotes);
 
     }
 

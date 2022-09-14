@@ -2,6 +2,7 @@ package com.github.vovan762000.restaurantvoting.web;
 
 import com.github.vovan762000.restaurantvoting.error.AppException;
 import com.github.vovan762000.restaurantvoting.error.DataConflictException;
+import com.github.vovan762000.restaurantvoting.error.JwtAuthenticationException;
 import com.github.vovan762000.restaurantvoting.util.validation.ValidationUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,6 +49,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<?> dataConflictException(WebRequest request, DataConflictException ex) {
         log.error("DataConflictException: {}", ex.getMessage());
         return createResponseEntity(request, ErrorAttributeOptions.of(MESSAGE), null, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(JwtAuthenticationException.class)
+    public ResponseEntity<?> jwtAuthenticationException(WebRequest request,JwtAuthenticationException ex){
+        log.error("JwtAuthenticationException: {}",ex.getMessage());
+        return createResponseEntity(request,ErrorAttributeOptions.of(MESSAGE),null,HttpStatus.FORBIDDEN);
     }
 
     @NonNull

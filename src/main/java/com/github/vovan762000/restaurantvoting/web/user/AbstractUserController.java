@@ -5,7 +5,6 @@ import com.github.vovan762000.restaurantvoting.repository.UserRepository;
 import com.github.vovan762000.restaurantvoting.util.UserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -34,8 +33,8 @@ public abstract class AbstractUserController {
         repository.deleteExisted(id);
     }
 
-    public ResponseEntity<User> getWithVotes(int id){
-        log.info("get {} with votes",id);
+    public ResponseEntity<User> getWithVotes(int id) {
+        log.info("get {} with votes", id);
         return ResponseEntity.ok(repository.getWithVotes(id));
     }
 

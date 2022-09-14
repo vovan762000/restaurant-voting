@@ -2,6 +2,7 @@ package com.github.vovan762000.restaurantvoting.web.user;
 
 import com.github.vovan762000.restaurantvoting.model.Role;
 import com.github.vovan762000.restaurantvoting.model.User;
+import com.github.vovan762000.restaurantvoting.model.Vote;
 import com.github.vovan762000.restaurantvoting.repository.UserRepository;
 import com.github.vovan762000.restaurantvoting.web.AbstractControllerTest;
 import org.junit.jupiter.api.Test;
@@ -13,10 +14,14 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import static com.github.vovan762000.restaurantvoting.web.user.UniqueMailValidator.EXCEPTION_DUPLICATE_EMAIL;
 import static com.github.vovan762000.restaurantvoting.web.user.UserTestData.*;
-import static com.github.vovan762000.restaurantvoting.web.vote.VoteTestData.VOTE_MATCHER;
 import static com.github.vovan762000.restaurantvoting.web.vote.VoteTestData.adminVotes;
+import static com.github.vovan762000.restaurantvoting.web.vote.VoteTestData.VOTE_MATCHER;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -72,7 +77,9 @@ class AdminUserControllerTest extends AbstractControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(USER_MATCHER.contentJson(admin));
         User userWithMeal = USER_MATCHER.readFromJson(action);
-        VOTE_MATCHER.assertMatch(userWithMeal.getVotes(), adminVotes);
+        List<Vote> votes = userWithMeal.getVotes();
+        Collections.sort(votes, Comparator.comparing(Vote::getDate).reversed());
+        VOTE_MATCHER.assertMatch(votes, adminVotes);
     }
 
     @Test

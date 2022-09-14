@@ -1,6 +1,5 @@
 package com.github.vovan762000.restaurantvoting.web.vote;
 
-import com.github.vovan762000.restaurantvoting.error.NotFoundException;
 import com.github.vovan762000.restaurantvoting.model.User;
 import com.github.vovan762000.restaurantvoting.model.Vote;
 import com.github.vovan762000.restaurantvoting.repository.UserRepository;

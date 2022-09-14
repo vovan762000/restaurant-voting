@@ -35,7 +35,7 @@ public class AdminUserController extends AbstractUserController {
     @Override
     @GetMapping("/with-votes/{id}")
     @PreAuthorize("hasAuthority('scope:admin_permission')")
-    public ResponseEntity<User> getWithVotes(@PathVariable int id){
+    public ResponseEntity<User> getWithVotes(@PathVariable int id) {
         return super.getWithVotes(id);
     }
 
