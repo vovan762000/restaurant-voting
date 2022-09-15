@@ -29,6 +29,11 @@ spring:
     setter: none
     is-getter: none
 
+  # https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-application-properties.html#common-application-properties-cache
+  cache:
+    cache-names: users
+    caffeine.spec: maximumSize=1,expireAfterAccess=60s
+
 logging:
   level:
     root: WARN
@@ -46,9 +51,3 @@ jwt:
   expiration: 604800
   header: Authorization
 
-# Jackson Serialization Issue Resolver
-#  jackson:
-#    visibility.field: any
-#    visibility.getter: none
-#    visibility.setter: none
-#    visibility.is-getter: none
