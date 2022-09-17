@@ -5,6 +5,9 @@ import com.github.vovan762000.restaurantvoting.repository.RestaurantRepository;
 import com.github.vovan762000.restaurantvoting.service.RestaurantService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -26,6 +29,7 @@ import static com.github.vovan762000.restaurantvoting.util.validation.Validation
 @Slf4j
 @RestController
 @AllArgsConstructor
+@CacheConfig(cacheNames = "restaurants")
 @RequestMapping(value = RestaurantController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestaurantController {
     static final String REST_URL = "/api/restaurants";
@@ -42,6 +46,7 @@ public class RestaurantController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('scope:user_permission')")
+    @Cacheable
     public List<Restaurant> getAll() {
         log.info("get all restaurants");
         return repository.findAll(Sort.by(Sort.Direction.ASC, "restaurantName"));
@@ -72,6 +77,7 @@ public class RestaurantController {
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasAuthority('scope:admin_permission')")
+    @CacheEvict(allEntries = true)
     public void update(@Valid @RequestBody Restaurant restaurant, @PathVariable int id) {
         log.info("update restaurant {} with id {}", restaurant, id);
         assureIdConsistent(restaurant, id);
@@ -80,6 +86,7 @@ public class RestaurantController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('scope:admin_permission')")
+    @CacheEvict(allEntries = true)
     public ResponseEntity<Restaurant> create(@Valid @RequestBody Restaurant restaurant) {
         log.info("create restaurant {}", restaurant);
         checkNew(restaurant);
@@ -93,6 +100,7 @@ public class RestaurantController {
     @DeleteMapping(value = "/{id}")
     @PreAuthorize("hasAuthority('scope:admin_permission')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @CacheEvict(value = "restaurants",allEntries = true)
     public void delete(@PathVariable int id) {
         log.info("delete restaurant {}", id);
         repository.deleteExisted(id);
